@@ -1,0 +1,118 @@
+{
+    "info": {
+        "name": "FGMIT",
+        "log": {
+            "name": ""
+        },
+        "device": [
+            0
+        ],
+        "test_on_checkpoint": "none",
+        "train_on_checkpoint": "none"
+    },
+    "opt": {
+        "seed": 2,
+        "dataloader": {
+            "requires": {
+                "tokenizer_roberta": {
+                    "path": "/root/autodl-tmp/model/roberta-base"
+                }
+            },
+            "loaders": {
+                "text": {
+                    "data_path": "input/text_json_clean/",
+                    "len": 100,
+                    "pad": 1
+                },
+                "img": {
+                    "data_path": "input/text_json_clean/",
+                    "transform_image": "/root/autodl-tmp/image_tensor"
+                },
+                "label": {
+                    "data_path": "input/text_json_clean/",
+                    "test_label": true
+                }
+            },
+            "batch_size": 32,
+            "pin_memory": true,
+            "num_workers": 2,
+            "shuffle": true
+        },
+        "mode": [
+            "train",
+            "valid",
+            "test"
+        ],
+        "checkpoint_step": 50,
+        "modelopt": {
+            "name": "FGMIT",
+            "input1": "text",
+            "input2": "img",
+            "input3": "text_mask",
+            "layer": 4,
+            "dropout": 0.1,
+            "hidden_size": 768,
+            "ffn_size": 768,
+            "multihead":8,
+            "len": 100,
+            "mlp_size": 768,
+            "output_size": 768,
+            "pooling": "avg",
+            "classifier": "both",
+            "roberta_path": "/root/autodl-tmp/model/roberta-base",
+            "roberta_layer": 8,
+            "finetune": true
+        },
+        "optimizeropt": {
+            "name": "Adam",
+            "lr": 1e-05,
+            "weight_decay": 0.01,
+            "params": {
+                "bertl_text": {
+                    "lr": 1e-05
+                },
+                "trar": {
+                    "lr": 1e-05,
+                    "weight_decay": 0.01
+                },
+                "MSG":{
+                    "lr":1e-05,
+                    "weight_decay":0.01
+                },
+                "classifier": {}
+            }
+        },
+        "lossopt": {
+            "name": "CrossEntropyLoss"
+        },
+        "total_epoch": 10,
+        "clip": 5
+    },
+    "MSG":{
+        "MODEL":{
+            "TYPE": "msg",
+            "DROP_RATE":0.0,
+            "DROP_PATH_RATE":0.1,
+            "NUM_CLASSES":0,
+            "MSG":{
+                "PATCH_SIZE": 4,
+                "IN_CHANS": 3,
+                "EMBED_DIM":96,
+                "DEPTHS":[2, 2, 6,2],
+                "NUM_HEADS":[3, 6, 12, 24],
+                "WINDOW_SIZE":7,
+                "MLP_RATIO":4,
+                "QKV_BIAS": true,
+                "QK_SCALE": "none",
+                "APE": false,
+                "PATCH_NORM":true,
+                "SHUF_SIZE":[4, 2, 2, 1],
+                "MANIP_TYPE":"shuf"
+    
+            }
+        },
+        "DATA":{
+            "IMG_SIZE":224
+        }
+    }
+}
